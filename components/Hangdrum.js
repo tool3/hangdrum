@@ -9,30 +9,62 @@ import F from './sounds/6.mp3';
 import G from './sounds/7.mp3';
 import H from './sounds/8.mp3';
 import I from './sounds/9.mp3';
+import { AudioContext } from 'standardized-audio-context';
+import { Howl } from 'howler';
 
 export default function Model(props) {
   const { nodes, materials } = useGLTF('/models/hangdrum.glb');
+  const tracks = {
+    A: new Howl({
+      src: [A],
+      format: ['mp3'],
+      preload: true
+    }),
+    B: new Howl({
+      src: [B],
+      format: ['mp3'],
+      preload: true
+    }),
+    C: new Howl({
+      src: [C],
+      format: ['mp3'],
+      preload: true
+    }),
+    D: new Howl({
+      src: [D],
+      format: ['mp3'],
+      preload: true
+    }),
+    E: new Howl({
+      src: [E],
+      format: ['mp3'],
+      preload: true
+    }),
 
-  async function createAudio(sound) {
-    const buffer = Buffer.from(sound, 'base64').buffer;
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    const source = context.createBufferSource();
-    source.buffer = await new Promise((res) => context.decodeAudioData(buffer, res));
-    source.loop = false;
-    // This is why it doesn't run in Safari 🍏🐛. Start has to be called in an onClick event
-    // which makes it too awkward for a little demo since you need to load the async data first
-    // source.connect(context.destination);
-    return { source, context, buffer };
-  }
+    F: new Howl({
+      src: [F],
+      format: ['mp3'],
+      preload: true
+    }),
+    G: new Howl({
+      src: [G],
+      format: ['mp3'],
+      preload: true
+    }),
+    H: new Howl({
+      src: [H],
+      format: ['mp3'],
+      preload: true
+    }),
+    I: new Howl({
+      src: [I],
+      format: ['mp3'],
+      preload: true
+    })
+  };
 
   async function playSound(track) {
-    const { source, context } = await createAudio(track);
-    source.connect(context.destination);
-
-    source.start(0);
-    source.onended = function () {
-      source.disconnect(context.destination);
-    };
+    tracks[track].play()
   }
 
   return (
@@ -46,7 +78,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(I)}
+        onClick={() => playSound('I')}
         geometry={nodes.Point_A.geometry}
         material={nodes.Point_A.material}
         position={[-0.07, 0.14, 0.62]}
@@ -56,7 +88,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(H)}
+        onClick={() => playSound('H')}
         geometry={nodes.Point_B.geometry}
         material={nodes.Point_B.material}
         position={[0.38, 0.12, 0.54]}
@@ -66,7 +98,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(G)}
+        onClick={() => playSound('G')}
         geometry={nodes.Point_C.geometry}
         material={nodes.Point_C.material}
         position={[0.66, 0.11, 0.2]}
@@ -76,7 +108,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(F)}
+        onClick={() => playSound('F')}
         geometry={nodes.Point_D.geometry}
         material={nodes.Point_D.material}
         position={[0.67, 0.09, -0.23]}
@@ -86,7 +118,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(E)}
+        onClick={() => playSound('E')}
         geometry={nodes.Point_E.geometry}
         material={nodes.Point_E.material}
         position={[0.4, 0.11, -0.55]}
@@ -96,7 +128,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(D)}
+        onClick={() => playSound('D')}
         geometry={nodes.Point_F.geometry}
         material={nodes.Point_F.material}
         position={[-0.04, 0.13, -0.63]}
@@ -106,7 +138,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(C)}
+        onClick={() => playSound('C')}
         geometry={nodes.Point_G.geometry}
         material={nodes.Point_G.material}
         position={[-0.47, 0.17, -0.32]}
@@ -116,7 +148,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(B)}
+        onClick={() => playSound('B')}
         geometry={nodes.Point_H.geometry}
         material={nodes.Point_H.material}
         position={[-0.51, 0.17, 0.25]}
@@ -126,7 +158,7 @@ export default function Model(props) {
         castShadow
         receiveShadow
         visible={false}
-        onClick={() => playSound(A)}
+        onClick={() => playSound('A')}
         geometry={nodes.Point_I.geometry}
         material={nodes.Point_I.material}
         position={[0.07, 0.35, 0]}
